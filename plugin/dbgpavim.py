@@ -359,12 +359,13 @@ class DebugUI:
     """ change mode to debug """
     if self.mode == DebugUI.DEBUG:
       return
+    # vim.command('mksession! ' + self.sessfile)
+    vim.command('SaveSession! ' + self.sessfile)
     dbgPavim.fileType = vim.eval('&ft')
     vim.command('let g:dbgPavimTab=tabpagenr()')
     self.mode = DebugUI.DEBUG
     # save session
     vim.command('set ssop-=tabpages')
-    vim.command('mksession! ' + self.sessfile)
     for i in range(1, len(vim.windows)+1):
       vim.command(str(i)+'wincmd w')
       self.winbuf[i] = vim.eval('bufnr("%")') # save buffer number, mksession does not do job perfectly
@@ -386,7 +387,7 @@ class DebugUI:
       return
 
     vim.command('exec "normal ".g:dbgPavimTab."gt"')
-    vim.command('unlet g:dbgPavimTab')
+    # vim.command('unlet g:dbgPavimTab')
     vim.command('sign unplace 1')
     vim.command('sign unplace 2')
 
@@ -394,9 +395,10 @@ class DebugUI:
     self.destroy()
 
     # restore session
-    vim.command('source ' + self.sessfile)
+    # vim.command('source ' + self.sessfile)
+    vim.command('OpenSession! ' + self.sessfile)
     vim.command("let &ssop=\""+self.backup_ssop+"\"")
-    os.remove(self.sessfile)
+    # os.remove(self.sessfile)
 
     self.set_highlight()
 
