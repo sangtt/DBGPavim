@@ -1044,7 +1044,7 @@ class DBGPavim:
       sl = self.statusline+"%{'-LISN-"+str(self.port)+"'}"
     else:
       sl = self.normal_statusline
-    vim.command("let &statusline=\""+sl+"\"")
+    # vim.command("let &statusline=\""+sl+"\"")
 
   def loadSettings(self):
     self.port = int(vim.eval('g:dbgPavimPort'))
