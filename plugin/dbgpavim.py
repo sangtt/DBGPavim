@@ -372,10 +372,19 @@ class DebugUI:
                                               # when buffer is not saved at all.
 
     vim.command('silent topleft new')                # create srcview window (winnr=1)
-    for i in range(2, len(vim.windows)+1):
-      vim.command(str(i)+'wincmd w')
-      vim.command('hide')
+    for i in range(2, len(vim.windows) + 1):
+      try:
+        vim.command(str(i)+'wincmd w')
+        vim.command('hide')
+      except:
+        DBGPavimTrace(str(i)+'wincmd w')
+        pass
     self.create()
+    try:
+      vim.command('3wincmd w')
+      vim.command('hide')
+    except:
+      pass
     vim.command('1wincmd w') # goto srcview window(nr=1, top-left)
     self.cursign = '1'
 
@@ -1044,7 +1053,7 @@ class DBGPavim:
       sl = self.statusline+"%{'-LISN-"+str(self.port)+"'}"
     else:
       sl = self.normal_statusline
-    # vim.command("let &statusline=\""+sl+"\"")
+    vim.command("let &statusline=\""+sl+"\"")
 
   def loadSettings(self):
     self.port = int(vim.eval('g:dbgPavimPort'))
